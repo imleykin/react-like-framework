@@ -17,8 +17,27 @@ function createTextElement(text) {
     },
   }
 }
+
+function render(element, container) {
+  const currentDomNode = element.type == "TEXT_ELEMENT"
+      ? document.createTextNode("")
+      : document.createElement(element.type);
+
+  const isProperty = key => key !== "children";
+
+  Object.keys(element.props)
+    .filter(isProperty)
+    .forEach(name => {
+      currentDomNode[name] = element.props[name];
+    });
+
+  element.props.children.forEach(child => render(child, currentDomNode));
+  container.appendChild(currentDomNode);
+}
+
 const ReReact = {
   createElement,
+  render,
 }
 
 /** @jsx ReReact.createElement */
@@ -28,3 +47,6 @@ const element = (
     <b />
   </div>
 )
+
+const container = document.getElementById("root");
+ReReact.render(element, container);
