@@ -1,1 +1,1 @@
-# A React-like framework
+# ReReact — a React-like framework.
